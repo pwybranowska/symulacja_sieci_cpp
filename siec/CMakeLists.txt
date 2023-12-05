@@ -3,7 +3,7 @@ project(siec)
 
 set(CMAKE_CXX_STANDARD 17)
 
-target_include_directories(include PUBLIC main.cpp)
+include_directories(include)
 
 add_executable(siec main.cpp
             src/factory.cpp)
