@@ -7,12 +7,13 @@
 
 #include "types.hpp"
 
+#include <set>
 
 class Package{
     Package();
     Package(ElementID id) : id_(id) { assigned_IDs.insert(id_);}
     Package(Package&& package) : id_(package.id_) {};
-    Package& operator = Package&& package;
+    Package& operator= (Package&&);
     ElementID get_id() const { return id_;}
     ~Package();
 private:

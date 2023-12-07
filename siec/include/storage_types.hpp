@@ -21,7 +21,7 @@ public:
 
     virtual bool empty() const = 0;
 
-    virtual size_t size() const = 0;
+    virtual std::size_t size() const = 0;
 
     virtual const_iterator cbegin() const = 0;
     virtual const_iterator cend() const = 0;
@@ -41,14 +41,14 @@ public:
 
 class PackageQueue : public IPackageQueue{
 public:
-    using const_iterator = std::list<Package>::const_iterator; //IDK CZY TO POTRZEBNE ALE WYWALA BLAD ZE NIE MA 
+    using const_iterator = std::list<Package>::const_iterator; //IDK CZY TO POTRZEBNE ALE WYWALA BLAD ZE NIE MA
 
     explicit PackageQueue(PackageQueueType queue_type): queue_(), queue_type_(queue_type){}
     void push(Package&& package) override {queue_.emplace_back(std::move(package));};
 
     bool empty() const override {return queue_.empty();}
 
-    size_t size() const override { return queue_.size();}
+    std::size_t size() const override { return queue_.size();}
 
     const_iterator cbegin() const override { return queue_.cbegin();};
     const_iterator cend() const override {return queue_.cend();};
