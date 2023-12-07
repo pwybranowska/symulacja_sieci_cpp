@@ -10,6 +10,7 @@
 #include <set>
 
 class Package{
+public:
     Package();
     Package(ElementID id) : id_(id) { assigned_IDs.insert(id_);}
     Package(Package&& package) : id_(package.id_) {};
