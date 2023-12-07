@@ -1,3 +1,0 @@
-C:/Users/admin/psio/siec/cmake-build-debug/CMakeFiles/siec.dir
-C:/Users/admin/psio/siec/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/admin/psio/siec/cmake-build-debug/CMakeFiles/rebuild_cache.dir
