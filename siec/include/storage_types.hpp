@@ -31,4 +31,15 @@ public:
     virtual ~IPackageStockpile() = default;
 };
 
+
+class IPackageQueue : IPackageStockpile{
+public:
+    virtual Package pop() = 0;
+    virtual PackageQueueType get_queue_type() const = 0;
+};
+
+class PackageQueue : public IPackageQueue{
+public:
+    PackageQueueType
+};
 #endif //SIEC_STORAGE_TYPES_HPP
