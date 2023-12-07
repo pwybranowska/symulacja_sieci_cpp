@@ -36,10 +36,32 @@ class IPackageQueue : IPackageStockpile{
 public:
     virtual Package pop() = 0;
     virtual PackageQueueType get_queue_type() const = 0;
+    ~IPackageQueue() override = default;
 };
 
 class PackageQueue : public IPackageQueue{
 public:
-    PackageQueueType
+    using const_iterator = std::list<Package>::const_iterator; //IDK CZY TO POTRZEBNE ALE WYWALA BLAD ZE NIE MA 
+
+    explicit PackageQueue(PackageQueueType queue_type): queue_(), queue_type_(queue_type){}
+    void push(Package&& package) override {queue_.emplace_back(std::move(package));};
+
+    bool empty() const override {return queue_.empty();}
+
+    size_t size() const override { return queue_.size();}
+
+    const_iterator cbegin() const override { return queue_.cbegin();};
+    const_iterator cend() const override {return queue_.cend();};
+    const_iterator begin() override {return queue_.begin();};
+    const_iterator end() override {return queue_.end();};
+
+    Package pop() override;
+    PackageQueueType get_queue_type() const override {return queue_type_;}
+
+    ~PackageQueue() override = default;
+
+private:
+    std::list<Package> queue_;
+    PackageQueueType queue_type_;
 };
 #endif //SIEC_STORAGE_TYPES_HPP

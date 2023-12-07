@@ -4,6 +4,10 @@
 
 #ifndef SIEC_PACKAGE_HPP
 #define SIEC_PACKAGE_HPP
+
+#include "types.hpp"
+
+
 class Package{
     Package();
     Package(ElementID id) : id_(id) { assigned_IDs.insert(id_);}
