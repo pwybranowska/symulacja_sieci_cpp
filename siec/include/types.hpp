@@ -7,4 +7,6 @@
 
 using ElementID = unsigned long long;
 
+using TimeOffset = unsigned long long;
+
 #endif //SIEC_TYPES_HPP
