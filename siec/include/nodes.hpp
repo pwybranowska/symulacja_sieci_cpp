@@ -52,12 +52,12 @@ public:
 
     void send_package();
 
-    const std::optional<Package>& get_sending_buffer() {return bufor_;};
+    const std::optional<Package>& get_sending_buffer() {return buffer_;};
 
 protected:
-    void push_package(Package &&package) {bufor_.emplace(package.get_id());};
+    void push_package(Package &&package) {buffer_.emplace(package.get_id());};
 private:
-    std::optional<Package> bufor_ = std::nullopt;
+    std::optional<Package> buffer_ = std::nullopt;
 
 };
 

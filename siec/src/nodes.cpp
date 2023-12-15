@@ -1,4 +1,5 @@
 #include "nodes.hpp"
+#include "package.hpp"
 
 void ReceiverPreferences::add_receiver(IPackageReceiver* receiver){
     double n = double(preferences_t_.size());
@@ -44,4 +45,13 @@ IPackageReceiver* ReceiverPreferences::choose_receiver(){
         return nullptr;
     }
     return nullptr;
+}
+
+void PackageSender::send_package() {
+    IPackageReceiver *receiver;
+    if(buffer_){
+        receiver = receiver_preferences_.choose_receiver();
+        receiver->receive_package(std::move(buffer_.value()));
+        buffer_.reset();
+    }
 }
