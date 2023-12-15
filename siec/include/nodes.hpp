@@ -7,6 +7,7 @@
 #include "helpers.hpp"
 #include <optional>
 #include <map>
+#include <memory>
 
 class IPackageReceiver{
 public:
@@ -79,4 +80,46 @@ private:
     std::optional<Package> buffer_ = std::nullopt;
 };
 
+class Storehouse : public IPackageReceiver{
+public:
+    Storehouse(ElementID id, std::unique_ptr<IPackageStockpile> d = std::make_unique<PackageQueue>(PackageQueueType::FIFO)) : id_(id), d_(std::move(d)){}
+    
+    void receive_package(Package&& package) override { d_->push(std::move(package));}
+    ElementID get_id() const override { return id_; }
+
+    IPackageStockpile::const_iterator cbegin() const override { return d_->cbegin();}
+    IPackageStockpile::const_iterator cend() const override {return d_->cend();}
+    IPackageStockpile::const_iterator begin() override {return d_->begin();}
+    IPackageStockpile::const_iterator end() override {return d_->end();}
+
+private:
+    ElementID id_;
+    std::unique_ptr<IPackageStockpile> d_;
+
+};
+
+class Worker : public PackageSender, public IPackageReceiver{
+public:
+    Worker(ElementID id, TimeOffset pd, std::unique_ptr<IPackageQueue> q) : PackageSender(), id_(id), pd_(pd), q_(std::move(q)) {}
+
+    void receive_package(Package&& package) override { q_->push(std::move(package));}
+    ElementID get_id() const override { return id_; }
+    TimeOffset get_processing_duration() const { return pd_; }
+    Time get_package_processing_start_time() const { return t_; }
+
+    IPackageStockpile::const_iterator cbegin() const override { return q_->cbegin();}
+    IPackageStockpile::const_iterator cend() const override {return q_->cend();}
+    IPackageStockpile::const_iterator begin() override {return q_->begin();}
+    IPackageStockpile::const_iterator end() override {return q_->end();}
+    
+    void do_work(Time t);
+
+private:
+    ElementID id_;
+    TimeOffset pd_;
+    std::unique_ptr<IPackageQueue> q_;
+    Time t_;
+    std::optional<Package> buffer_ = std::nullopt;
+
+};
 #endif //SIEC_NODES_HPP

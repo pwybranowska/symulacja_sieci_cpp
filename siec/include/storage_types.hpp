@@ -32,7 +32,7 @@ public:
 };
 
 
-class IPackageQueue : IPackageStockpile{
+class IPackageQueue : public IPackageStockpile {
 public:
     virtual Package pop() = 0;
     virtual PackageQueueType get_queue_type() const = 0;
