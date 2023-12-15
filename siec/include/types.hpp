@@ -6,5 +6,6 @@
 #define SIEC_TYPES_HPP
 
 using ElementID = unsigned long long;
+using Time = unsigned long long;
 
 #endif //SIEC_TYPES_HPP
