@@ -20,27 +20,26 @@ public:
     virtual ~IPackageReceiver() = default;
 };
 
-class ReceiverPreferences{
+class ReceiverPreferences {
 public:
     ReceiverPreferences(ProbabilityGenerator pg = probability_generator) : pg_(std::move(pg)) {}
-
     using preferences_t = std::map<IPackageReceiver *, double>;
 
     void add_receiver(IPackageReceiver* receiver);
     void remove_receiver(IPackageReceiver* receiver);
-    IPackageReceiver* choose_receiver();
-    const preferences_t& get_preferences() const {return preferences_t_;}
+    IPackageReceiver *choose_receiver();
+    const preferences_t &get_preferences() const { return preferences_t_; }
 
     using const_iterator = preferences_t::const_iterator;
-    const_iterator cbegin() const {return preferences_t_.cbegin();}
-    const_iterator cend() const {return preferences_t_.cend();}
-    const_iterator begin() const {return preferences_t_.cbegin();}
-    const_iterator end() const {return preferences_t_.cend(); }
+    const_iterator cbegin() const { return preferences_t_.cbegin(); }
+    const_iterator cend() const { return preferences_t_.cend(); }
+    const_iterator begin() { return preferences_t_.cbegin(); }
+    const_iterator end() { return preferences_t_.cend(); }
 
 private:
     preferences_t preferences_t_;
     ProbabilityGenerator pg_;
-
+};
 
 
 class PackageSender {
