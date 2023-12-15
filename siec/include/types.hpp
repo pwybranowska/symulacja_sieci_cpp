@@ -9,6 +9,9 @@
 
 
 using ElementID = unsigned long long;
+using Time = unsigned long long;
+
+using TimeOffset = unsigned long long;
 
 using ProbabilityGenerator = std::function<double()>;
 
