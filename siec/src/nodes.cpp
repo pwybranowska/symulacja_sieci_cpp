@@ -31,7 +31,7 @@ void ReceiverPreferences::remove_receiver(IPackageReceiver* receiver){
 
 IPackageReceiver* ReceiverPreferences::choose_receiver(){
     double probability = pg_();
-    for(probability >= 0 and probability <= 1.0){
+    if(probability >= 0 and probability <= 1.0){
         double probability_distribution = 0.0;
         for(auto& el : preferences_t_){
             probability_distribution += el.second;
@@ -54,4 +54,17 @@ void PackageSender::send_package() {
         receiver->receive_package(std::move(buffer_.value()));
         buffer_.reset();
     }
+}
+
+void Ramp::deliver_goods(Time t){
+    if (!buffer_){
+        push_package(Package());
+        buffer_.emplace(id_);
+        t_ = t;
+    } else {
+        if (t - di_ == t_){
+            push_package(Package());
+        }
+    }
+
 }
