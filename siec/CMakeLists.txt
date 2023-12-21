@@ -17,6 +17,26 @@ set(SOURCE_FILES
         src/nodes.cpp
         src/storage_types.cpp
 
-        )
+)
 
 add_executable(siec ${SOURCE_FILES} main.cpp)
+
+set(SOURCES_FILES_TESTS
+        test/main_gtest.cpp
+
+        test/test_nodes.cpp
+        test/test_package.cpp
+        test/test_storage_types.cpp
+)
+
+add_executable(siec_test ${SOURCE_FILES} ${SOURCES_FILES_TESTS} test/main_gtest.cpp)
+
+target_include_directories(siec_test PUBLIC
+        $googletest-master/googlemock/include
+        $googletest-master/googletest/include
+        mocks
+)
+
+add_subdirectory(googletest-master)
+
+target_link_libraries(siec_test gmock)

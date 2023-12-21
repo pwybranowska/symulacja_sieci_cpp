@@ -25,8 +25,8 @@ public:
 
     virtual const_iterator cbegin() const = 0;
     virtual const_iterator cend() const = 0;
-    virtual const_iterator begin() = 0;
-    virtual const_iterator end() = 0;
+    virtual const_iterator begin() const = 0;
+    virtual const_iterator end() const = 0;
 
     virtual ~IPackageStockpile() = default;
 };
@@ -52,8 +52,8 @@ public:
 
     const_iterator cbegin() const override { return queue_.cbegin();};
     const_iterator cend() const override {return queue_.cend();};
-    const_iterator begin() override {return queue_.begin();};
-    const_iterator end() override {return queue_.end();};
+    const_iterator begin() const override {return queue_.begin();};
+    const_iterator end() const override {return queue_.end();};
 
     Package pop() override;
     PackageQueueType get_queue_type() const override {return queue_type_;}

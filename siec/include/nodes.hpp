@@ -16,8 +16,8 @@ public:
 
     virtual IPackageStockpile::const_iterator cbegin() const = 0;
     virtual IPackageStockpile::const_iterator cend() const = 0;
-    virtual IPackageStockpile::const_iterator begin() = 0;
-    virtual IPackageStockpile::const_iterator end() = 0;
+    virtual IPackageStockpile::const_iterator begin() const = 0;
+    virtual IPackageStockpile::const_iterator end() const = 0;
 
     virtual ~IPackageReceiver() = default;
 };
@@ -35,8 +35,8 @@ public:
     using const_iterator = preferences_t::const_iterator;
     const_iterator cbegin() const { return preferences_t_.cbegin(); }
     const_iterator cend() const { return preferences_t_.cend(); }
-    const_iterator begin() { return preferences_t_.cbegin(); }
-    const_iterator end() { return preferences_t_.cend(); }
+    const_iterator begin() const { return preferences_t_.cbegin(); }
+    const_iterator end() const { return preferences_t_.cend(); }
 
 private:
     preferences_t preferences_t_;
@@ -89,8 +89,8 @@ public:
 
     IPackageStockpile::const_iterator cbegin() const override { return d_->cbegin();}
     IPackageStockpile::const_iterator cend() const override {return d_->cend();}
-    IPackageStockpile::const_iterator begin() override {return d_->begin();}
-    IPackageStockpile::const_iterator end() override {return d_->end();}
+    IPackageStockpile::const_iterator begin() const override {return d_->begin();}
+    IPackageStockpile::const_iterator end() const override {return d_->end();}
 
 private:
     ElementID id_;
@@ -109,8 +109,8 @@ public:
 
     IPackageStockpile::const_iterator cbegin() const override { return q_->cbegin();}
     IPackageStockpile::const_iterator cend() const override {return q_->cend();}
-    IPackageStockpile::const_iterator begin() override {return q_->begin();}
-    IPackageStockpile::const_iterator end() override {return q_->end();}
+    IPackageStockpile::const_iterator begin() const override {return q_->begin();}
+    IPackageStockpile::const_iterator end() const override {return q_->end();}
     
     void do_work(Time t);
 
