@@ -3,6 +3,8 @@ project(siec)
 
 set(CMAKE_CXX_STANDARD 17)
 
+add_compile_options(-Wall -Wextra -Werror -Wpedantic -pedantic-errors -Wconversion -Wno-error=pessimizing-move)
+
 include_directories(
         include
 
