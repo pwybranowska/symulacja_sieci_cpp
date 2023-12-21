@@ -9,6 +9,8 @@
 #include <map>
 #include <memory>
 
+enum class ReceiverType{ Worker, Storehouse };
+
 class IPackageReceiver{
 public:
     virtual void receive_package(Package&& package) = 0;
@@ -18,6 +20,8 @@ public:
     virtual IPackageStockpile::const_iterator cend() const = 0;
     virtual IPackageStockpile::const_iterator begin() const = 0;
     virtual IPackageStockpile::const_iterator end() const = 0;
+
+    virtual ReceiverType get_receiver_type() const = 0;
 
     virtual ~IPackageReceiver() = default;
 };
