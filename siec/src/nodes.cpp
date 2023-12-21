@@ -75,7 +75,7 @@ void Worker::do_work(Time t){
         t_ = t;
     }
     else {
-        if (t_ - t + 1 == pd_){
+        if (t - t_ + 1 == pd_){
             push_package(Package(buffer_.value().get_id()));
             buffer_.reset();
 
