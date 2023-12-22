@@ -11,6 +11,9 @@
 #include <memory>
 
 
+enum class ReceiverType{ WORKER, STOREHOUSE };
+
+
 class IPackageReceiver{
 public:
     virtual void receive_package(Package&& package) = 0;
@@ -20,6 +23,8 @@ public:
     virtual IPackageStockpile::const_iterator cend() const = 0;
     virtual IPackageStockpile::const_iterator begin() const = 0;
     virtual IPackageStockpile::const_iterator end() const = 0;
+
+    virtual ReceiverType get_receiver_type() const = 0;
 
     virtual ~IPackageReceiver() = default;
 };
@@ -94,6 +99,7 @@ public:
     IPackageStockpile::const_iterator begin() const override {return d_->begin();}
     IPackageStockpile::const_iterator end() const override {return d_->end();}
 
+    ReceiverType get_receiver_type() const override { return ReceiverType::STOREHOUSE; }
 
 private:
     ElementID id_;
@@ -114,6 +120,10 @@ public:
     IPackageStockpile::const_iterator cend() const override {return q_->cend();}
     IPackageStockpile::const_iterator begin() const override {return q_->begin();}
     IPackageStockpile::const_iterator end() const override {return q_->end();}
+
+
+    ReceiverType get_receiver_type() const override { return ReceiverType::WORKER; }
+
 
     void do_work(Time t);
 
