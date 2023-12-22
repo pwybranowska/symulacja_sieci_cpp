@@ -124,9 +124,9 @@ public:
 
     ReceiverType get_receiver_type() const override { return ReceiverType::WORKER; }
 
-
     void do_work(Time t);
 
+    IPackageQueue* get_queue() const {return q_.get() ;}
 private:
     ElementID id_;
     TimeOffset pd_;
