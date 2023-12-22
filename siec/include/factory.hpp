@@ -90,9 +90,10 @@ struct ParsedLineData{
     std::map<std::string, std::string> map;
 };
 
+ParsedLineData parse_line(std::string line);
 
 Factory load_factory_structure(std::istream& input_stream);
 
-void save_factory_structure(const Factory& factory, std::ostream& output_stream);
+void save_factory_structure(Factory& factory, std::ostream& output_stream);
 
 #endif //SIEC_FACTORY_HPP
