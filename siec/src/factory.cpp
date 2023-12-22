@@ -84,6 +84,9 @@ void Factory::do_package_passing() {
     for (auto& ramp : ramps_){
         ramp.send_package();
     }
-
 }
 
+template<class Node>
+void Factory::remove_receiver(NodeCollection<Node> collection, ElementID id) {
+    
+}

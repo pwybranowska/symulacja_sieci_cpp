@@ -51,7 +51,7 @@ public:
 
 
     void add_worker(Worker&& worker) { workers_.add(std::move(worker)); }
-    void remove_worker(ElementID id) {workers_.remove_by_id(id);}
+    void remove_worker(ElementID id) { workers_.remove_by_id(id);}
     NodeCollection<Worker>::iterator find_worker_by_id(ElementID id) { return workers_.find_by_id(id); };
     NodeCollection<Worker>::const_iterator find_worker_by_id(ElementID id) const { return workers_.find_by_id(id); }
     NodeCollection<Worker>::const_iterator worker_cbegin() { return workers_.cbegin(); };
@@ -59,7 +59,7 @@ public:
 
 
     void add_storehouse(Storehouse&& storehouse) { storehouses_.add(std::move(storehouse)); }
-    void remove_storehouse(ElementID id) {storehouses_.remove_by_id(id);}
+    void remove_storehouse(ElementID id) { storehouses_.remove_by_id(id);}
     NodeCollection<Storehouse>::iterator find_storehouse_by_id(ElementID id) { return storehouses_.find_by_id(id); };
     NodeCollection<Storehouse>::const_iterator find_storehouse_by_id(ElementID id) const { return storehouses_.find_by_id(id); }
     NodeCollection<Storehouse>::const_iterator storehouse_cbegin() { return storehouses_.cbegin(); };
@@ -77,6 +77,7 @@ private:
     NodeCollection<Worker> workers_;
     NodeCollection<Storehouse> storehouses_;
 
-
+    template<class Node>
+            void remove_receiver(NodeCollection<Node> collection, ElementID id);
 };
 #endif //SIEC_FACTORY_HPP
