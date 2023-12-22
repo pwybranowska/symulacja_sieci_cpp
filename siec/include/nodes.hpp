@@ -5,9 +5,11 @@
 #include "storage_types.hpp"
 #include "types.hpp"
 #include "helpers.hpp"
+
 #include <optional>
 #include <map>
 #include <memory>
+
 
 class IPackageReceiver{
 public:
@@ -92,6 +94,7 @@ public:
     IPackageStockpile::const_iterator begin() const override {return d_->begin();}
     IPackageStockpile::const_iterator end() const override {return d_->end();}
 
+
 private:
     ElementID id_;
     std::unique_ptr<IPackageStockpile> d_;
@@ -111,7 +114,7 @@ public:
     IPackageStockpile::const_iterator cend() const override {return q_->cend();}
     IPackageStockpile::const_iterator begin() const override {return q_->begin();}
     IPackageStockpile::const_iterator end() const override {return q_->end();}
-    
+
     void do_work(Time t);
 
 private:
@@ -120,6 +123,5 @@ private:
     std::unique_ptr<IPackageQueue> q_;
     Time t_;
     std::optional<Package> buffer_ = std::nullopt;
-
 };
 #endif //SIEC_NODES_HPP
