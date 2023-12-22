@@ -88,5 +88,11 @@ void Factory::do_package_passing() {
 
 template<class Node>
 void Factory::remove_receiver(NodeCollection<Node> collection, ElementID id) {
-    
+    auto id_ptr = dynamic_cast<IPackageReceiver*>(collection.find_by_id(id));
+    for (auto &worker: workers_){
+        worker.receiver_preferences_.remove_receiver(id_ptr);
+    }
+    for (auto &ramp: ramps_){
+        ramp.receiver_preferences_.remove_receiver(id_ptr);
+    }
 }
