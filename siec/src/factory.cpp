@@ -113,62 +113,35 @@ void Factory::remove_storehouse(ElementID id) {
     storehouses_.remove_by_id(id);
 }
 
-// ParsedLineData parse_line(std::string line){
-//     ParsedLineData pld;
-//     std::vector<std::string> tokens;
-//     std::string token;
-
-//     std::istringstream token_stream(line);
-//     char space = ' ';
-//     char eq = '=';
-//     std::getline(token_stream, token, space);
-//     if(token == "LOADING_RAMP"){
-//         pld.element_type = RAMP;
-//     }
-//     if(token == "WORKER"){
-//         pld.element_type = WORKER;
-//     }
-//     if(token == "STOREHOUSE"){
-//         pld.element_type = STOREHOUSE;
-//     }
-//     if(token == "LINK"){
-//         pld.element_type = LINK;
-//     }
-
-//     while (std::getline(token_stream, token, space)) {
-//         std::string key = token.substr(0, token.find(eq));
-//         std::string id = token.substr(token.find(eq) + 1, token.size()-1);
-//         pld.map.insert(std::make_pair(key,id));
-//     }
-//     return pld;
-// }
 
 ParsedLineData parse_line(std::string line) {
    ParsedLineData parsed_data;
-   std::istringstream token_stream(line);
+
    std::vector<std::string> tokens;
    std::string token;
-
-   if (std::getline(token_stream, token, ' ')) {
-       if (token == "LOADING_RAMP") {
-           parsed_data.element_type = ElementType::RAMP;
-       } else if (token == "WORKER") {
-           parsed_data.element_type = ElementType::WORKER;
-       } else if (token == "STOREHOUSE") {
-           parsed_data.element_type = ElementType::STOREHOUSE;
-       } else if (token == "LINK") {
-           parsed_data.element_type = ElementType::LINK;
-       }
-   }
+   std::istringstream token_stream(line);
 
    while (std::getline(token_stream, token, ' ')) {
-       std::istringstream key_value_stream(token);
-       std::string key, value;
-       if (std::getline(key_value_stream, key, '=')) {
-           if (std::getline(key_value_stream, value)) {
-               parsed_data.map[key] = value;
-           }
+       tokens.push_back(token);
+   }
+    if (tokens[0] == "LOADING_RAMP") {
+        parsed_data.element_type = ElementType::RAMP;
+    } else if (tokens[0] == "WORKER") {
+        parsed_data.element_type = ElementType::WORKER;
+    } else if (tokens[0] == "STOREHOUSE") {
+        parsed_data.element_type = ElementType::STOREHOUSE;
+    } else if (tokens[0] == "LINK") {
+        parsed_data.element_type = ElementType::LINK;
+    }
+
+   std::string str;
+   for (auto s = tokens.begin() + 1; s != tokens.end(); s++){
+       std::istringstream tok_s(*s);
+       std::vector<std::string> vect_s;
+       while (std::getline(tok_s, str, '=')){
+           vect_s.push_back(str);
        }
+       parsed_data.mapped.insert(std::make_pair(vect_s[0], vect_s[1]));
    }
    return parsed_data;
 }
@@ -182,37 +155,37 @@ Factory load_factory_structure(std::istream& is) {
         }
         auto parsed = parse_line(line);
         if (parsed.element_type == RAMP) {
-            ElementID id = std::stoi(parsed.map["id"]);
-            TimeOffset di = std::stoi(parsed.map["delivery-interval"]);
+            ElementID id = std::stoi(parsed.mapped["id"]);
+            TimeOffset di = std::stoi(parsed.mapped["delivery-interval"]);
             factory.add_ramp(Ramp(id, di));
         }
         else if (parsed.element_type == WORKER) {
-            ElementID id = std::stoi(parsed.map["id"]);
-            TimeOffset di =  std::stoi(parsed.map["processing-time"]);
+            ElementID id = std::stoi(parsed.mapped["id"]);
+            TimeOffset di =  std::stoi(parsed.mapped["processing-time"]);
             PackageQueueType package_type;
-            if (parsed.map["queue-type"] == "LIFO") {
+            if (parsed.mapped["queue-type"] == "LIFO") {
                 package_type = PackageQueueType::LIFO;
-            } else if (parsed.map["queue-type"] == "FIFO") {
+            } else if (parsed.mapped["queue-type"] == "FIFO") {
                 package_type = PackageQueueType::FIFO;
             }
 
             factory.add_worker(Worker(id, di, std::make_unique<PackageQueue>(PackageQueueType(package_type))));
         }
         else if (parsed.element_type == STOREHOUSE){
-            ElementID id = std::stoi(parsed.map["id"]);
+            ElementID id = std::stoi(parsed.mapped["id"]);
             factory.add_storehouse(Storehouse(id));
         }
         else if (parsed.element_type == LINK){
                 std::vector<std::string> senders;
                 std::vector<std::string> receivers;
                 std::string token;
-                std::istringstream token_sender(parsed.map["src"]);
+                std::istringstream token_sender(parsed.mapped["src"]);
                 while (std::getline(token_sender, token, '-')){
                     senders.push_back(token);
                 }
-                std::istringstream token_receivers(parsed.map["dest"]);
+                std::istringstream token_receivers(parsed.mapped["dest"]);
                 while (std::getline(token_receivers, token, '-')){
-                    senders.push_back(token);
+                    receivers.push_back(token);
                 }
 
                 if(senders[0] == "ramp" and receivers[0] == "worker"){

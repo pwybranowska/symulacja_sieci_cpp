@@ -87,7 +87,7 @@ enum ElementType {
 
 struct ParsedLineData{
     ElementType element_type;
-    std::map<std::string, std::string> map;
+    std::map<std::string, std::string> mapped;
 };
 
 ParsedLineData parse_line(std::string line);
