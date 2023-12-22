@@ -143,7 +143,7 @@ void Factory::remove_storehouse(ElementID id) {
 //     return pld;
 // }
 
-ParsedLineData parse_line(const std::string& line) {
+ParsedLineData parse_line(std::string line) {
    ParsedLineData parsed_data;
    std::istringstream token_stream(line);
    std::vector<std::string> tokens;
@@ -168,78 +168,9 @@ ParsedLineData parse_line(const std::string& line) {
            if (std::getline(key_value_stream, value)) {
                parsed_data.map[key] = value;
            }
-
        }
    }
    return parsed_data;
-}
-std::pair<std::string, std::string> parse_type(std::string line) {
-    std::pair<std::string, std::string> key_id;
-    std::istringstream token_stream(line);
-    std::string token;
-
-    std::getline(token_stream, token, '=');
-
-    std::string key = token.substr(0, token.find('-'));
-    std::string id = token.substr(token.find('-') + 1, token.size() - 1);
-    key_id = std::make_pair(key, id);
-    return key_id;
-}
-
-std::list<std::pair<std::string, std::string>> make_pairs_r(const Ramp& sender) {
-    std::list<std::pair<std::string, std::string>> paired;
-
-    std::string sender_type = "ramp";
-    std::string sender_id = std::to_string(sender.get_id());
-    std::string sender_string = sender_type + "-" + sender_id;
-
-    std::map<IPackageReceiver*, double> receiver_list = sender.receiver_preferences_.get_preferences();
-    for (auto& receiver : receiver_list) {
-        ReceiverType type = receiver.first->get_receiver_type();
-        std::string receiver_type;
-
-        if (type == ReceiverType::WORKER) {
-            receiver_type = "worker";
-        } else {
-            receiver_type = "store";
-        }
-
-        std::string receiver_id = std::to_string(receiver.first->get_id());
-        std::string receiver_string = receiver_type + "-" + receiver_id;
-
-        std::pair<std::string, std::string> pair = std::make_pair(sender_string, receiver_string);
-        paired.insert(paired.end(), pair);
-    }
-
-    return paired;
-}
-
-std::list<std::pair<std::string, std::string>> make_pairs_w(const Worker& sender) {
-    std::list<std::pair<std::string, std::string>> paired;
-
-    std::string sender_type = "worker";
-    std::string sender_id = std::to_string(sender.get_id());
-    std::string sender_string = sender_type + "-" + sender_id;
-
-    std::map<IPackageReceiver*, double> receiver_list = sender.receiver_preferences_.get_preferences();
-    for (auto& receiver : receiver_list) {
-        ReceiverType type = receiver.first->get_receiver_type();
-        std::string receiver_type;
-
-        if (type == ReceiverType::WORKER) {
-            receiver_type = "worker";
-        } else {
-            receiver_type = "store";
-        }
-
-        std::string receiver_id = std::to_string(receiver.first->get_id());
-        std::string receiver_string = receiver_type + "-" + receiver_id;
-
-        std::pair<std::string, std::string> pair = std::make_pair(sender_string, receiver_string);
-        paired.insert(paired.end(), pair);
-    }
-
-    return paired;
 }
 
 Factory load_factory_structure(std::istream& is) {
