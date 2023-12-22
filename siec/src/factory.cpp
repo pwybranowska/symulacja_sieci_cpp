@@ -87,12 +87,25 @@ void Factory::do_package_passing() {
 }
 
 template<class Node>
-void Factory::remove_receiver(NodeCollection<Node> collection, ElementID id) {
-    auto id_ptr = dynamic_cast<IPackageReceiver*>(collection.find_by_id(id));
-    for (auto &worker: workers_){
-        worker.receiver_preferences_.remove_receiver(id_ptr);
+void Factory::remove_receiver(NodeCollection<Node>& collection, ElementID id) {
+    auto node_it = collection.find_by_id(id);
+    if (node_it != collection.end()){
+        IPackageReceiver* id_ptr = dynamic_cast<IPackageReceiver*>(&(*node_it));
+        for (auto &worker: workers_){
+            worker.receiver_preferences_.remove_receiver(id_ptr);
+        }
+        for (auto& ramp: ramps_) {
+            ramp.receiver_preferences_.remove_receiver(id_ptr);
+        }
     }
-    for (auto &ramp: ramps_){
-        ramp.receiver_preferences_.remove_receiver(id_ptr);
-    }
+}
+
+void Factory::remove_worker(ElementID id) {
+    remove_receiver(workers_, id);
+    workers_.remove_by_id(id);
+}
+
+void Factory::remove_storehouse(ElementID id) {
+    remove_receiver(storehouses_, id);
+    storehouses_.remove_by_id(id);
 }
