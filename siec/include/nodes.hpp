@@ -5,11 +5,14 @@
 #include "storage_types.hpp"
 #include "types.hpp"
 #include "helpers.hpp"
+
 #include <optional>
 #include <map>
 #include <memory>
 
+
 enum class ReceiverType{ WORKER, STOREHOUSE };
+
 
 class IPackageReceiver{
 public:
@@ -118,7 +121,9 @@ public:
     IPackageStockpile::const_iterator begin() const override {return q_->begin();}
     IPackageStockpile::const_iterator end() const override {return q_->end();}
 
+
     ReceiverType get_receiver_type() const override { return ReceiverType::WORKER; }
+
 
     void do_work(Time t);
 
@@ -128,6 +133,5 @@ private:
     std::unique_ptr<IPackageQueue> q_;
     Time t_;
     std::optional<Package> buffer_ = std::nullopt;
-
 };
 #endif //SIEC_NODES_HPP
