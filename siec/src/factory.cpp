@@ -100,6 +100,7 @@ void Factory::remove_receiver(NodeCollection<Node>& collection, ElementID id) {
     }
 }
 
+
 void Factory::remove_worker(ElementID id) {
     remove_receiver(workers_, id);
     workers_.remove_by_id(id);

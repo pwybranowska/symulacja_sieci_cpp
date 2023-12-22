@@ -80,4 +80,19 @@ private:
     template<class Node>
             void remove_receiver(NodeCollection<Node>& collection, ElementID id);
 };
+
+enum ElementType {
+    RAMP, WORKER, STOREHOUSE, LINK,
+};
+
+struct ParsedLineData{
+    ElementType element_type;
+    std::map<std::string, std::string> map;
+};
+
+
+Factory load_factory_structure(std::istream& input_stream);
+
+void save_factory_structure(const Factory& factory, std::ostream& output_stream);
+
 #endif //SIEC_FACTORY_HPP
