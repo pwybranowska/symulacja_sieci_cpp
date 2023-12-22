@@ -73,3 +73,9 @@ void Factory::do_deliveries(Time t) {
         ramp.deliver_goods(t);
     }
 };
+
+void Factory::do_work(Time t) {
+    for (auto& worker : workers_){
+        worker.do_work(t);
+    }
+};
