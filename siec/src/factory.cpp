@@ -113,36 +113,66 @@ void Factory::remove_storehouse(ElementID id) {
     storehouses_.remove_by_id(id);
 }
 
-ParsedLineData parse_line(std::string line){
-    ParsedLineData pld;
-    std::vector<std::string> tokens;
-    std::string token;
+// ParsedLineData parse_line(std::string line){
+//     ParsedLineData pld;
+//     std::vector<std::string> tokens;
+//     std::string token;
 
-    std::istringstream token_stream(line);
-    char space = ' ';
-    char eq = '=';
-    std::getline(token_stream, token, space);
-    if(token == "LOADING_RAMP"){
-        pld.element_type = RAMP;
-    }
-    if(token == "WORKER"){
-        pld.element_type = WORKER;
-    }
-    if(token == "STOREHOUSE"){
-        pld.element_type = STOREHOUSE;
-    }
-    if(token == "LINK"){
-        pld.element_type = LINK;
-    }
+//     std::istringstream token_stream(line);
+//     char space = ' ';
+//     char eq = '=';
+//     std::getline(token_stream, token, space);
+//     if(token == "LOADING_RAMP"){
+//         pld.element_type = RAMP;
+//     }
+//     if(token == "WORKER"){
+//         pld.element_type = WORKER;
+//     }
+//     if(token == "STOREHOUSE"){
+//         pld.element_type = STOREHOUSE;
+//     }
+//     if(token == "LINK"){
+//         pld.element_type = LINK;
+//     }
 
-    while (std::getline(token_stream, token, space)) {
-        std::string key = token.substr(0, token.find(eq));
-        std::string id = token.substr(token.find(eq) + 1, token.size()-1);
-        pld.map.insert(std::make_pair(key,id));
-    }
-    return pld;
+//     while (std::getline(token_stream, token, space)) {
+//         std::string key = token.substr(0, token.find(eq));
+//         std::string id = token.substr(token.find(eq) + 1, token.size()-1);
+//         pld.map.insert(std::make_pair(key,id));
+//     }
+//     return pld;
+// }
+
+ParsedLineData parse_line(const std::string& line) {
+   ParsedLineData parsed_data;
+   std::istringstream token_stream(line);
+   std::vector<std::string> tokens;
+   std::string token;
+
+   if (std::getline(token_stream, token, ' ')) {
+       if (token == "LOADING_RAMP") {
+           parsed_data.element_type = ElementType::RAMP;
+       } else if (token == "WORKER") {
+           parsed_data.element_type = ElementType::WORKER;
+       } else if (token == "STOREHOUSE") {
+           parsed_data.element_type = ElementType::STOREHOUSE;
+       } else if (token == "LINK") {
+           parsed_data.element_type = ElementType::LINK;
+       }
+   }
+
+   while (std::getline(token_stream, token, ' ')) {
+       std::istringstream key_value_stream(token);
+       std::string key, value;
+       if (std::getline(key_value_stream, key, '=')) {
+           if (std::getline(key_value_stream, value)) {
+               parsed_data.map[key] = value;
+           }
+
+       }
+   }
+   return parsed_data;
 }
-
 std::pair<std::string, std::string> parse_type(std::string line) {
     std::pair<std::string, std::string> key_id;
     std::istringstream token_stream(line);
