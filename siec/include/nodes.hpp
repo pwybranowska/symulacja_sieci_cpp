@@ -9,7 +9,7 @@
 #include <map>
 #include <memory>
 
-enum class ReceiverType{ Worker, Storehouse };
+enum class ReceiverType{ WORKER, STOREHOUSE };
 
 class IPackageReceiver{
 public:
@@ -96,6 +96,8 @@ public:
     IPackageStockpile::const_iterator begin() const override {return d_->begin();}
     IPackageStockpile::const_iterator end() const override {return d_->end();}
 
+    ReceiverType get_receiver_type() const override { return ReceiverType::STOREHOUSE; }
+
 private:
     ElementID id_;
     std::unique_ptr<IPackageStockpile> d_;
@@ -115,7 +117,9 @@ public:
     IPackageStockpile::const_iterator cend() const override {return q_->cend();}
     IPackageStockpile::const_iterator begin() const override {return q_->begin();}
     IPackageStockpile::const_iterator end() const override {return q_->end();}
-    
+
+    ReceiverType get_receiver_type() const override { return ReceiverType::WORKER; }
+
     void do_work(Time t);
 
 private:
