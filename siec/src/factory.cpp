@@ -113,38 +113,6 @@ void Factory::remove_storehouse(ElementID id) {
     storehouses_.remove_by_id(id);
 }
 
-
-//ParsedLineData parse_line(const std::string& line) {
-//    ParsedLineData parsed_data;
-//    std::istringstream token_stream(line);
-//    std::vector<std::string> tokens;
-//    std::string token;
-//
-//    if (std::getline(token_stream, token, ' ')) {
-//        if (token == "LOADING_RAMP") {
-//            parsed_data.element_type = ElementType::RAMP;
-//        } else if (token == "WORKER") {
-//            parsed_data.element_type = ElementType::WORKER;
-//        } else if (token == "STOREHOUSE") {
-//            parsed_data.element_type = ElementType::STOREHOUSE;
-//        } else if (token == "LINK") {
-//            parsed_data.element_type = ElementType::LINK;
-//        }
-//    }
-//
-//    while (std::getline(token_stream, token, ' ')) {
-//        std::istringstream key_value_stream(token);
-//        std::string key, value;
-//        if (std::getline(key_value_stream, key, '=')) {
-//            if (std::getline(key_value_stream, value)) {
-//                parsed_data.map[key] = value;
-//            }
-//
-//        }
-//    }
-//    return parsed_data;
-//}
-
 ParsedLineData parse_line(std::string line){
     ParsedLineData pld;
     std::vector<std::string> tokens;
@@ -316,11 +284,11 @@ void save_factory_structure(Factory& factory, std::ostream& os) {
     os << "; == LOADING RAMPS ==" << std::endl;
     auto ramp = [&os] (const Ramp& rmp){
         os << std::endl << "LOADING_RAMP id=" << rmp.get_id();
-        os << "delivery-interval=" << rmp.get_delivery_interval();
+        os << " delivery-interval=" << rmp.get_delivery_interval();
     };
     std::for_each(factory.ramp_cbegin(), factory.ramp_cend(), ramp);
 
-    os << std::endl << std::endl <<" == WORKERS ==" << std::endl;
+    os << std::endl << std::endl <<"; == WORKERS ==" << std::endl;
     auto worker = [&os](const Worker& wrkr){
         os << std::endl << "WORKER id=" << wrkr.get_id();
         os << " processing-time=" << wrkr.get_processing_duration();
@@ -335,17 +303,17 @@ void save_factory_structure(Factory& factory, std::ostream& os) {
     };
     std::for_each(factory.worker_cbegin(), factory.worker_cend(), worker);
 
-    os << std::endl << std::endl << " == STOREHOUSES ==" << std::endl;
+    os << std::endl << std::endl << "; == STOREHOUSES ==" << std::endl;
     auto str = [&os] (const Storehouse& store){
         os << std::endl << "STOREHOUSE id=" << store.get_id();
     };
     std::for_each(factory.storehouse_cbegin(), factory.storehouse_cend(), str);
 
 
-    os << std::endl <<  std::endl << " == LINKS ==" << std::endl;
+    os << std::endl <<  std::endl << "; == LINKS ==" << std::endl;
     auto from_ramp = [&os] (const Ramp& rmp){
         for (auto& receiver: rmp.receiver_preferences_.get_preferences())
-            os << std::endl << "LINK src=ramp-" << rmp. get_id() << "dest=worker-" << receiver.first -> get_id();
+            os << std::endl << "LINK src=ramp-" << rmp. get_id() << " dest=worker-" << receiver.first -> get_id();
     };
     std::for_each(factory.ramp_cbegin(), factory.ramp_cend(), from_ramp);
 
