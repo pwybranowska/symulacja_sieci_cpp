@@ -70,6 +70,7 @@ public:
     void do_deliveries(Time t);
 
     void do_work(Time t);
+    void do_package_passing();
 
 private:
     NodeCollection<Ramp> ramps_;
