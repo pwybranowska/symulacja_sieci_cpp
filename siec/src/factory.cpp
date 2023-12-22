@@ -1,6 +1,7 @@
 #include "factory.hpp"
 #include <map>
 #include <stdexcept>
+#include <sstream>
 
 template<class Node>
 void NodeCollection<Node>::remove_by_id(ElementID id){
@@ -100,7 +101,6 @@ void Factory::remove_receiver(NodeCollection<Node>& collection, ElementID id) {
     }
 }
 
-
 void Factory::remove_worker(ElementID id) {
     remove_receiver(workers_, id);
     workers_.remove_by_id(id);
@@ -109,4 +109,36 @@ void Factory::remove_worker(ElementID id) {
 void Factory::remove_storehouse(ElementID id) {
     remove_receiver(storehouses_, id);
     storehouses_.remove_by_id(id);
+}
+
+
+ParsedLineData parse_line(const std::string& line) {
+    ParsedLineData parsed_data;
+    std::istringstream token_stream(line);
+    std::vector<std::string> tokens;
+    std::string token;
+
+    if (std::getline(token_stream, token, ' ')) {
+        if (token == "LOADING_RAMP") {
+            parsed_data.element_type = ElementType::RAMP;
+        } else if (token == "WORKER") {
+            parsed_data.element_type = ElementType::WORKER;
+        } else if (token == "STOREHOUSE") {
+            parsed_data.element_type = ElementType::STOREHOUSE;
+        } else if (token == "LINK") {
+            parsed_data.element_type = ElementType::LINK;
+        }
+    }
+
+    while (std::getline(token_stream, token, ' ')) {
+        std::istringstream key_value_stream(token);
+        std::string key, value;
+        if (std::getline(key_value_stream, key, '=')) {
+            if (std::getline(key_value_stream, value)) {
+                parsed_data.map[key] = value;
+            }
+
+        }
+    }
+    return parsed_data;
 }
