@@ -13,7 +13,7 @@
 #include <stdexcept>
 #include <algorithm>
 
-template <typename Node>
+template <class Node>
 class NodeCollection {
 public:
     using container_t = typename std::list<Node>;
