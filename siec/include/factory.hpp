@@ -68,7 +68,6 @@ public:
     bool is_consistent();
 
     void do_deliveries(Time t);
-
     void do_work(Time t);
     void do_package_passing();
 

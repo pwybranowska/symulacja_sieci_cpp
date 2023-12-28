@@ -85,3 +85,12 @@ void Worker::do_work(Time t){
         }
     }
 }
+
+std::optional<Package>& Worker::get_processing_buffer() const{
+    if (buffer_){
+        return (std::optional<Package> &) buffer_.value();
+    }
+    else {
+        return (std::optional<Package> &) std::nullopt;
+    }
+}
