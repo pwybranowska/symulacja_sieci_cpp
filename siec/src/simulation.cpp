@@ -11,13 +11,12 @@ void simulate(Factory& f, TimeOffset d, std::function<void (Factory&, Time)> rf)
 
         while(t <= d){
             f.do_deliveries(t);
-            f.do_work(t);
             f.do_package_passing();
-
+            f.do_work(t);
             rf(f,  t);
 
 
-            t ++;
+            t++;
         }
 
     }
