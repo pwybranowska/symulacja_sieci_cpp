@@ -1,4 +1,5 @@
 #include "reports.hpp"
+#include "nodes.hpp"
 #include <iostream>
 #include <string>
 
@@ -72,7 +73,7 @@ void generate_simulation_turn_report(const Factory& f, std::ostream& os, Time t)
 
         const auto &queue = wrkr.get_queue();
         os << "  Queue: ";
-        if (!queue->empty()) {
+        if (queue->cbegin() != queue->cend()) {
             for (const auto &package: *queue) {
                 os << "#" << package.get_id();
                 if (package.get_id() != queue->cend()->get_id()) {
@@ -84,7 +85,7 @@ void generate_simulation_turn_report(const Factory& f, std::ostream& os, Time t)
             os << "(empty)" << std::endl;
         }
 
-        auto& sent_buffer = wrkr.get_processing_buffer();
+        auto& sent_buffer = wrkr.get_sending_buffer();
         if (sent_buffer != std::nullopt) {
             os << "  SBuffer: #" << sent_buffer->get_id() << std::endl;
 

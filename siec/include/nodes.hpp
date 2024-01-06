@@ -61,7 +61,7 @@ public:
 
     void send_package();
 
-    const std::optional<Package>& get_sending_buffer() {return buffer_;};
+    const std::optional<Package> &get_sending_buffer() const {return buffer_;};
 
 protected:
     void push_package(Package &&package) {buffer_.emplace(package.get_id());};
