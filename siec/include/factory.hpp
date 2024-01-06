@@ -23,8 +23,7 @@ public:
     void add(Node&& node) { nodes_.push_back(std::move(node));}
     void remove_by_id(ElementID id);
 
-    NodeCollection<Node>::iterator find_by_id(ElementID id) {return std::find_if(nodes_.begin(), nodes_.end(), [id](Node& elem) {return elem.get_id()==id;});}
-    NodeCollection<Node>::const_iterator find_by_id(ElementID id) const {return std::find_if(nodes_.cbegin(), nodes_.cend(), [id] (const Node& elem) {return elem.get_id()==id;});}
+    NodeCollection<Node>::iterator find_by_id(ElementID id) {return std::find_if(nodes_.begin(), nodes_.end(), [id](Node& elem) {return elem.get_id()==id;});}NodeCollection<Node>::const_iterator find_by_id(ElementID id) const {return std::find_if(nodes_.cbegin(), nodes_.cend(), [id] (const Node& elem) {return elem.get_id()==id;});}
 
 
     iterator begin() { return nodes_.begin() ;}
